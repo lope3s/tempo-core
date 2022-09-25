@@ -1,0 +1,701 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CORE API (user, files, login)",
+        "description": "This service is responsible of managing users."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:4000",
+            "description": "Local server."
+        }
+    ],
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": ["User"],
+                "description": "Create a user.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Dio Brando"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "dio.brando@yahoo.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "M0rr4J0j0"
+                                    },
+                                    "age": {
+                                        "type": "string",
+                                        "example": 999
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Não binário"
+                                    }
+                                },
+                                "required": ["name", "email", "password", "age", "gender"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "The following fields are missing.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "fields": {
+                                            "type": "array",
+                                            "example": [
+                                                "email",
+                                                "password"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "E-mail already registered."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created.",
+                        "content": {
+                            "application/json":{
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "6327a374394087be9d53a3ca"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": ["User"],
+                "description": "Return a user.",
+                "security": [{"bearerAuth": []}],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "user ID."
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "ID": {
+                                        "value": {"error": "Missing id."}
+                                    },
+                                    "Token": {
+                                        "value": {"error": "Missing token."}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid token."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Ok.",
+                        "content": {
+                            "application/json":{
+                                "schema": {
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "example": "6327a374394087be9d53a3ca"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Luan Lopes"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "mlopes.works@gmail.com"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "male"
+                                        },
+                                        "age": {
+                                            "type": "number",
+                                            "example": 23
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["User"],
+                "description": "Update a user.",
+                "security": [{"bearerAuth": []}],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "user ID."
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Dio Brando & The World"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "dio.brando@yahoo.com.br"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "M0rr4J0j0&J0t4r0"
+                                    },
+                                    "age": {
+                                        "type": "string",
+                                        "example": 9999
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "???"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "ID": {
+                                        "value": {"error": "Missing id."}
+                                    },
+                                    "Token": {
+                                        "value": {"error": "Missing token."}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid token."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Ok.",
+                        "content": {
+                            "application/json":{
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User updated."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["User"],
+                "description": "Delete a user.",
+                "security": [{"bearerAuth": []}],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "user ID."
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "ID": {
+                                        "value": {"error": "Missing id."}
+                                    },
+                                    "Token": {
+                                        "value": {"error": "Missing token."}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid token."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content."
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Login"],
+                "description": "Route to sign in, the token generated in this route is valid during 7 days.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "dio.brando@yahoo.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "M0rr4J0j0"
+                                    }
+                                },
+                                "required": ["email", "password"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "Missing e-mail": {
+                                        "value": {"error": "Missing e-mail."}
+                                    },
+                                    "Missing password": {
+                                        "value": {"error": "Missing password."}
+                                    },
+                                    "E-mail or password wrong": {
+                                        "value": {"error": "E-mail or password wrong."}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User not found."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token:": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMjdhMzc0Mzk0MDg3YmU5ZDUzYTNjYSIsImlhdCI6MTY2NDA5NzI3MSwiZXhwIjoxNjY0NzAyMDcxfQ.glTqC0GrjZhmCE0GuOZNOuWbjRIqC8v9sZPYRKZ1gSk"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/files": {
+            "post": {
+                "tags": ["Files"],
+                "description": "Upload files.",
+                "security": [{"bearerAuth": []}],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "userId": {
+                                        "type": "object",
+                                        "example": "6327a374394087be9d53a3ca"
+                                    },
+                                    "files": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "ID": {
+                                        "value": {"error": "Missing id."}
+                                    },
+                                    "Token": {
+                                        "value": {"error": "Missing token."}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid token."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Ok.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sucess."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/files/{fileId}": {
+            "delete": {
+                "tags": ["Files"],
+                "description": "Delete file.",
+                "security": [{"bearerAuth": []}],
+                "parameters": [
+                    {
+                        "name": "fileId",
+                        "in": "path",
+                        "description": "File ID."
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "ID": {
+                                        "value": {"error": "Missing id."}
+                                    },
+                                    "Token": {
+                                        "value": {"error": "Missing token."}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid token."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content."
+                    },
+                    "500": {
+                        "description": "Internal server error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Internal server error."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
