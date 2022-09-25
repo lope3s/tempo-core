@@ -4,3 +4,4 @@ brainstorm.txt
 coverage
 uploads
 mongodb
+.env
