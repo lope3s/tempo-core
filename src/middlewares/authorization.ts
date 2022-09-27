@@ -10,7 +10,6 @@ function authenticate (req: Request, res: Response, next: NextFunction) {
 
     try {
         const verifyToken = verify(splitedToken, process.env.TOKEN_SECRET || '')
-    
         
         req.body.sessionUserId = Object(verifyToken).id
         

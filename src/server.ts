@@ -18,7 +18,7 @@ app.use(morgan('combined'));
 
 app.use(routes);
 
-app.listen(process.env.APP_PORT, () => {
-    setUpDb()
+app.listen(process.env.APP_PORT, async () => {
+    await setUpDb()
     console.log(`running on ${process.env.APP_URL}`)
 })
