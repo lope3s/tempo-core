@@ -143,6 +143,9 @@
                                     },
                                     "Token": {
                                         "value": {"error": "Missing token."}
+                                    },
+                                    "Invalid ID format": {
+                                        "value": {"error": "Invalid ID format."}
                                     }
                                 }
                             }
@@ -285,6 +288,9 @@
                                     },
                                     "Token": {
                                         "value": {"error": "Missing token."}
+                                    },
+                                    "Invalid ID format": {
+                                        "value": {"error": "Invalid ID format."}
                                     }
                                 }
                             }
@@ -314,21 +320,6 @@
                                         "error": {
                                             "type": "string",
                                             "example": "User not found."
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Internal server error."
                                         }
                                     }
                                 }
@@ -381,6 +372,9 @@
                                     },
                                     "Token": {
                                         "value": {"error": "Missing token."}
+                                    },
+                                    "Invalid ID format": {
+                                        "value": {"error": "Invalid ID format."}
                                     }
                                 }
                             }
@@ -564,6 +558,9 @@
                                     },
                                     "Token": {
                                         "value": {"error": "Missing token."}
+                                    },
+                                    "Invalid ID format": {
+                                        "value": {"error": "Invalid ID format."}
                                     }
                                 }
                             }
@@ -647,6 +644,9 @@
                                     },
                                     "Token": {
                                         "value": {"error": "Missing token."}
+                                    },
+                                    "Invalid ID format": {
+                                        "value": {"error": "Invalid ID format."}
                                     }
                                 }
                             }
